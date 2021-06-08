@@ -21,7 +21,7 @@ private:
 
         for (int i = 0; i < (int)line.length(); i++)
         {
-            if ((48 <= int(line[i]) && int(line[i])  <= 57) || line[i] == '.' || line[i] == '+' || line[i] == '-' || line[i] == 'e')
+            if ((48 <= int(line[i]) && int(line[i]) <= 57) || line[i] == '.' || line[i] == '+' || line[i] == '-' || line[i] == 'e')
             {
                 tmp += line[i];
             }
@@ -211,8 +211,9 @@ public:
             cout << "Iter - " << iter << "/" << iters << endl;
             bool done = true;
 
-            // Add all points to their nearest cluster
-            #pragma omp parallel for reduction(&&: done) num_threads(16)
+// Add all points to their nearest cluster
+#pragma omp parallel for reduction(&& \
+                                   : done) num_threads(16)
             for (int i = 0; i < total_points; i++)
             {
                 int currentClusterId = all_points[i].getCluster();
@@ -245,7 +246,8 @@ public:
                     double sum = 0.0;
                     if (ClusterSize > 0)
                     {
-                        #pragma omp parallel for reduction(+: sum) num_threads(16)
+#pragma omp parallel for reduction(+ \
+                                   : sum) num_threads(16)
                         for (int p = 0; p < ClusterSize; p++)
                         {
                             sum += clusters[i].getPoint(p).getVal(j);
@@ -257,8 +259,7 @@ public:
 
             if (done || iter >= iters)
             {
-                cout << "Clustering completed in iteration : " << iter << endl
-                     << endl;
+                cout << "Clustering completed in iteration : " << iter << endl << endl;
                 break;
             }
             iter++;
@@ -334,7 +335,7 @@ int main(int argc, char **argv)
         all_points.push_back(point);
         pointId++;
     }
-    
+
     infile.close();
     cout << "\nData fetched successfully!" << endl
          << endl;
