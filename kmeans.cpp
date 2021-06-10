@@ -49,15 +49,10 @@ public:
         dimensions = values.size();
         clusterId = 0; // Initially not assigned to any cluster
     }
-
     int getDimensions() { return dimensions; }
-
     int getCluster() { return clusterId; }
-
-    int getID() { return pointId; }
-
+    int getID() { return pointId; 
     void setCluster(int val) { clusterId = val; }
-
     double getVal(int pos) { return values[pos]; }
 };
 
